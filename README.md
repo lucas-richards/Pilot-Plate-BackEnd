@@ -12,6 +12,10 @@ This is the backend for the full stack stock app for anyone that wants to practi
 ## Planning section
 
 
+### ERD
+
+<img src="./images/erd.png" alt="entity relationship diagram">
+
 
 ## API
 

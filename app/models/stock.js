@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
-const exampleSchema = new mongoose.Schema(
+const stockSchema = new mongoose.Schema(
 	{
-		title: {
+		symbol: {
 			type: String,
 			required: true,
 		},
-		text: {
-			type: String,
+		price: {
+			type: Number,
 			required: true,
 		},
 		owner: {
@@ -21,4 +21,4 @@ const exampleSchema = new mongoose.Schema(
 	}
 )
 
-module.exports = mongoose.model('Example', exampleSchema)
+module.exports = mongoose.model('Stock', stockSchema)
