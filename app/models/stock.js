@@ -6,10 +6,18 @@ const stockSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		logo:String,
+		name:String,
 		price: {
 			type: Number,
 			required: true,
 		},
+		prev_price:Number,
+		open:Number,
+		high:Number,
+		low:Number,
+		close:Number,
+		volume:Number,
 		owner: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',

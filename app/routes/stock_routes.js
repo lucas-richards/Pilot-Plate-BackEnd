@@ -29,12 +29,13 @@ const router = express.Router()
 
 // INDEX
 // GET /stocks
-router.get('/stocks', requireToken, (req, res, next) => {
-	Stock.find()
+router.get('/stocks', (req, res, next) => {
+	Stock.find().populate('owner')
 		.then((stocks) => {
 			// `stocks` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
 			// apply `.toObject` to each one
+			console.log(stocks)
 			return stocks.map((stock) => stock.toObject())
 		})
 		// respond with status 200 and JSON of the stocks
@@ -45,9 +46,9 @@ router.get('/stocks', requireToken, (req, res, next) => {
 
 // SHOW
 // GET /stocks/5a7db6c74d55bc51bdf39793
-router.get('/stocks/:id', requireToken, (req, res, next) => {
+router.get('/stocks/:id', (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
-	Stock.findById(req.params.id)
+	Stock.findById(req.params.id).populate('owner')
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "stock" JSON
 		.then((stock) => res.status(200).json({ stock: stock.toObject() }))
