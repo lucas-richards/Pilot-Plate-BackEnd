@@ -28,7 +28,10 @@ const router = express.Router()
 // INDEX
 // GET /accounts
 router.get('/accounts', (req, res, next) => {
-	Account.find().populate('owner')
+	const ownerIdToFind = req.query.ownerIdToFind;
+	// Define the query object based on whether ownerIdToFind is provided
+	const query = ownerIdToFind ? { owner: ownerIdToFind } : {};
+	Account.find(query).populate('owner')
 		.then((accounts) => {
 			return accounts.map((account) => account.toObject())
 		})
