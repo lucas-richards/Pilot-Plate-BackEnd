@@ -57,10 +57,10 @@ router.get('/accounts/:id', (req, res, next) => {
 // POST /accounts
 router.post('/accounts', requireToken, (req, res, next) => {
 	// set owner of new account to be current user
-	req.body.account.owner = req.user.id
+	req.body.owner = req.user.id
 	console.log(req.body)
 
-	Account.create(req.body.account)
+	Account.create(req.body)
 		// respond to succesful `create` with status 201 and JSON of new "account"
 		.then((account) => {
 			res.status(201).json({ account: account.toObject() })
