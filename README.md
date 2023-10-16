@@ -1,4 +1,4 @@
-# Stock Playground API
+# Trading Playground API
 
 This is the backend for the full stack stock app for anyone that wants to practice stock exchange for free and no risk.
 
