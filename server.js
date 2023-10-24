@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // require route files
-const placeRoutes = require('./app/routes/place_routes')
+const businessRoutes = require('./app/routes/business_routes')
 const userRoutes = require('./app/routes/user_routes')
 
 // require middleware
@@ -21,7 +21,7 @@ const auth = require('./lib/auth')
 
 // define server and client ports
 // used for cors and local port declaration
-const serverDevPort = 8000
+const serverDevPort = 3001
 const clientDevPort = 3000
 
 // establish database connection
@@ -68,7 +68,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
-app.use(placeRoutes)
+app.use(businessRoutes)
 app.use(userRoutes)
 
 // register error handling middleware
