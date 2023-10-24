@@ -1,6 +1,6 @@
-# Trading Playground API
+# Hackathon API
 
-This is the backend for the full stack stock app for anyone that wants to practice stock exchange for free and no risk.
+This is the backend for the full stack Hackathon App
 
 ## Technologies Used
 
@@ -31,30 +31,17 @@ Add your own scripts to test your custom API.
 | PATCH  | `/change-password/` | `users#changepw`  |
 | DELETE | `/sign-out/`        | `users#signout`   |
 
-### Stocks
+### places
 
 | Verb   | URI Pattern            | Controller#Action |
 |--------|------------------------|-------------------|
-| GET   | `/stocks`             | `stocks#index`    |
-| GET   | `/stocks/<stock_id>`    | `stocks#show`    |
-| POST   | `/stocks`             | `stocks#create`    |
-| PATCH  | `/stocks/<stock_id>` | `stocks#update`  |
-| DELETE | `/stocks/<stock_id>`        | `stocks#delete`   |
-
-### Transactions
-
-| Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
-| POST   | `/transaction`         | `transaction#create`    |
+| GET   | `/places`             | `places#index`    |
+| GET   | `/places/<place_id>`    | `places#show`    |
+| POST   | `/places`             | `places#create`    |
+| PATCH  | `/places/<place_id>` | `places#update`  |
+| DELETE | `/places/<place_id>`        | `places#delete`   |
 
 
-### Comments
-
-| Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
-| POST   | `/comments/<transaction_id>`             | `comments#create`    |
-| PATCH  | `/comments/<transaction_id>` | `comments#update`  |
-| DELETE | `/comments/<transaction_id>`        | `comments#delete`   |
 
 #### Recommended Request bodies
 
@@ -70,13 +57,13 @@ Request - users#signup:
 }
 ```
 
-Request - stocks#create (requires a token):
+Request - places#create (requires a token):
 
 ```json
 {
-    "stock": {
-        "symbol": "IBM",
-        "price": "234.34",
+    "place": {
+        "title": "restaurant name",
+        "desc": "this is a place to eat",
         
     }
 }

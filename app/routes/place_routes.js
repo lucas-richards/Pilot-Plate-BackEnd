@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // pull in Mongoose model for examples
-const Account = require('../models/account')
+const Place = require('../models/place')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -26,44 +26,44 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /accounts
-router.get('/accounts', (req, res, next) => {
+// GET /places
+router.get('/places', (req, res, next) => {
 	const ownerIdToFind = req.query.ownerIdToFind;
 	// Define the query object based on whether ownerIdToFind is provided
 	const query = ownerIdToFind ? { owner: ownerIdToFind } : {};
-	Account.find(query).populate('owner')
-		.then((accounts) => {
-			return accounts.map((account) => account.toObject())
+	Place.find(query).populate('owner')
+		.then((places) => {
+			return places.map((place) => place.toObject())
 		})
-		// respond with status 200 and JSON of the accounts
-		.then((accounts) => res.status(200).json({ accounts: accounts }))
+		// respond with status 200 and JSON of the places
+		.then((places) => res.status(200).json({ places: places }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
 
 // SHOW
-// GET /accounts/5a7db6c74d55bc51bdf39793
-router.get('/accounts/:id', (req, res, next) => {
+// GET /places/5a7db6c74d55bc51bdf39793
+router.get('/places/:id', (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
-	Account.findById(req.params.id).populate('owner')
+	Place.findById(req.params.id).populate('owner')
 		.then(handle404)
-		// if `findById` is succesful, respond with 200 and "account" JSON
-		.then((account) => res.status(200).json({ account: account.toObject() }))
+		// if `findById` is succesful, respond with 200 and "place" JSON
+		.then((place) => res.status(200).json({ place: place.toObject() }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
 
 // CREATE
-// POST /accounts
-router.post('/accounts', requireToken, (req, res, next) => {
-	// set owner of new account to be current user
+// POST /places
+router.post('/places', requireToken, (req, res, next) => {
+	// set owner of new place to be current user
 	req.body.owner = req.user.id
 	console.log(req.body)
 
-	Account.create(req.body)
-		// respond to succesful `create` with status 201 and JSON of new "account"
-		.then((account) => {
-			res.status(201).json({ account: account.toObject() })
+	Place.create(req.body)
+		// respond to succesful `create` with status 201 and JSON of new "place"
+		.then((place) => {
+			res.status(201).json({ place: place.toObject() })
 		})
 		// if an error occurs, pass it off to our error handler
 		// the error handler needs the error message and the `res` object so that it
@@ -72,21 +72,21 @@ router.post('/accounts', requireToken, (req, res, next) => {
 })
 
 // UPDATE
-// PATCH /accounts/5a7db6c74d55bc51bdf39793
-router.patch('/accounts/:id', requireToken, removeBlanks, (req, res, next) => {
+// PATCH /places/5a7db6c74d55bc51bdf39793
+router.patch('/places/:id', requireToken, removeBlanks, (req, res, next) => {
 	// if the client attempts to change the `owner` property by including a new
 	// owner, prevent that by deleting that key/value pair
-	delete req.body.account.owner
+	delete req.body.place.owner
 
-	Account.findById(req.params.id)
+	Place.findById(req.params.id)
 		.then(handle404)
-		.then((account) => {
+		.then((place) => {
 			// pass the `req` object and the Mongoose record to `requireOwnership`
 			// it will throw an error if the current user isn't the owner
-			requireOwnership(req, account)
+			requireOwnership(req, place)
 
 			// pass the result of Mongoose's `.update` to the next `.then`
-			return account.updateOne(req.body.account)
+			return place.updateOne(req.body.place)
 		})
 		// if that succeeded, return 204 and no JSON
 		.then(() => res.sendStatus(204))
