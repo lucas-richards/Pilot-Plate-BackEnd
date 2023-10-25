@@ -50,7 +50,7 @@ app.use(
 app.get('/yelp-data/:loc', async (req, res) => {
 
 try {
-	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}`, {
+	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&categories=${req.query.category}&radius=${req.query.radius}`, {
 		method: 'GET',
 		headers: {
 		'Authorization': process.env.API_KEY,
