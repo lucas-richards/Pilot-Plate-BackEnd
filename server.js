@@ -21,7 +21,7 @@ const auth = require('./lib/auth')
 
 // define server and client ports
 // used for cors and local port declaration
-const serverDevPort = 3001
+const serverDevPort = 8000
 const clientDevPort = 3000
 
 // establish database connection
@@ -44,6 +44,29 @@ app.use(
 		origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`,
 	})
 )
+
+// Yelp API
+  
+app.get('/yelp-data/:loc', async (req, res) => {
+
+try {
+	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}`, {
+		method: 'GET',
+		headers: {
+		'Authorization': process.env.API_KEY,
+		
+	},
+	
+});
+	console.log('#############req.query',req.query)
+	
+	const data = await response.json();
+	res.json(data);
+} catch (error) {
+	res.status(500).json({ error: 'An error occurred' });
+}
+});
+  
 
 // define port for API to run on
 // adding PORT= to your env file will be necessary for deployment
