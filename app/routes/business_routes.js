@@ -28,11 +28,12 @@ const router = express.Router()
 // INDEX
 // GET /businesses
 router.get('/businesses/:dataId', (req, res, next) => {
-	console.log(req.query.dataId)
+	console.log('this is req.query,dataId =',req.query.dataId)
 	const yelpIdToFind = req.query.dataId;
 	// Define the query object based on whether ownerIdToFind is provided
-	const query = yelpIdToFind ? { yelp_id: yelpIdToFind } : {};
-	Business.find(query)
+	let query = yelpIdToFind ? { yelp_id: yelpIdToFind } : {};
+	if (req.query.dataId === 'undefined') query={}
+	Business.find(query).populate('owner')
 		.then((businesses) => {
 			return businesses.map((business) => business.toObject())
 		})
@@ -43,16 +44,16 @@ router.get('/businesses/:dataId', (req, res, next) => {
 })
 
 // SHOW
-// GET /businesses/5a7db6c74d55bc51bdf39793
-router.get('/businesses/:id', (req, res, next) => {
-	// req.params.id will be set based on the `:id` in the route
-	Business.findById(req.params.id)
-		.then(handle404)
-		// if `findById` is succesful, respond with 200 and "business" JSON
-		.then((business) => res.status(200).json({ business: business.toObject() }))
-		// if an error occurs, pass it to the handler
-		.catch(next)
-})
+// // GET /businesses/5a7db6c74d55bc51bdf39793
+// router.get('/businesses/:id', (req, res, next) => {
+// 	// req.params.id will be set based on the `:id` in the route
+// 	Business.findById(req.params.id)
+// 		.then(handle404)
+// 		// if `findById` is succesful, respond with 200 and "business" JSON
+// 		.then((business) => res.status(200).json({ business: business.toObject() }))
+// 		// if an error occurs, pass it to the handler
+// 		.catch(next)
+// })
 
 // CREATE
 // POST /businesses
