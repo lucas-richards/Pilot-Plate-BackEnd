@@ -41,7 +41,8 @@ const app = express()
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
 	cors({
-		origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`,
+		origin:[ process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`,
+		'https://plate-pilot.onrender.com']
 	})
 )
 
