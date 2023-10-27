@@ -41,8 +41,7 @@ const app = express()
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
 	cors({
-		origin:[ process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`,
-		'https://plate-pilot.onrender.com']
+		origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`
 	})
 )
 
@@ -51,6 +50,7 @@ app.use(
 app.get('/yelp-data/:loc', async (req, res) => {
 
 try {
+	console.log('this was hit')
 	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&categories=${req.query.category}&radius=${req.query.radius}`, {
 		method: 'GET',
 		headers: {
