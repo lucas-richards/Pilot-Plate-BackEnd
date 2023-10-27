@@ -50,7 +50,7 @@ app.use(
 app.get('/yelp-data/:loc', async (req, res) => {
 
 try {
-	console.log('this was hit')
+	console.log('API_KEY=',process.env.API_KEY)
 	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&categories=${req.query.category}&radius=${req.query.radius}`, {
 		method: 'GET',
 		headers: {
@@ -64,7 +64,7 @@ try {
 	const data = await response.json();
 	res.json(data);
 } catch (error) {
-	res.status(500).json({ error: 'An error occurred' });
+	res.status(500).json({ error: 'An error occurred',error });
 }
 });
   
