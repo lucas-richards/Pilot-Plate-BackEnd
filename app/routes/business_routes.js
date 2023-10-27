@@ -27,11 +27,12 @@ const router = express.Router()
 
 // INDEX
 // GET /businesses
-router.get('/businesses', (req, res, next) => {
-	const ownerIdToFind = req.query.ownerIdToFind;
+router.get('/businesses/:dataId', (req, res, next) => {
+	console.log(req.query.dataId)
+	const yelpIdToFind = req.query.dataId;
 	// Define the query object based on whether ownerIdToFind is provided
-	const query = ownerIdToFind ? { owner: ownerIdToFind } : {};
-	Business.find(query).populate('owner')
+	const query = yelpIdToFind ? { yelp_id: yelpIdToFind } : {};
+	Business.find(query)
 		.then((businesses) => {
 			return businesses.map((business) => business.toObject())
 		})
@@ -45,7 +46,7 @@ router.get('/businesses', (req, res, next) => {
 // GET /businesses/5a7db6c74d55bc51bdf39793
 router.get('/businesses/:id', (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
-	Business.findById(req.params.id).populate('owner')
+	Business.findById(req.params.id)
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "business" JSON
 		.then((business) => res.status(200).json({ business: business.toObject() }))
@@ -55,12 +56,13 @@ router.get('/businesses/:id', (req, res, next) => {
 
 // CREATE
 // POST /businesses
-router.post('/businesses', requireToken, (req, res, next) => {
+router.post('/businesses', (req, res, next) => {
 	// set owner of new business to be current user
-	req.body.owner = req.user.id
+	console.log('req.user',req.body.user)
 	console.log(req.body)
+	req.body.business.owner = req.body.user._id
 
-	Business.create(req.body)
+	Business.create(req.body.business)
 		// respond to succesful `create` with status 201 and JSON of new "business"
 		.then((business) => {
 			res.status(201).json({ business: business.toObject() })
@@ -73,20 +75,25 @@ router.post('/businesses', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /businesses/5a7db6c74d55bc51bdf39793
-router.patch('/businesses/:id', requireToken, removeBlanks, (req, res, next) => {
-	// if the client attempts to change the `owner` property by including a new
-	// owner, prevent that by deleting that key/value pair
-	delete req.body.business.owner
-
-	Business.findById(req.params.id)
+router.delete('/businesses/:id', (req, res, next) => {
+	console.log(req.params.id)
+	Business.find({ yelp_id: req.params.id })
 		.then(handle404)
-		.then((business) => {
-			// pass the `req` object and the Mongoose record to `requireOwnership`
-			// it will throw an error if the current user isn't the owner
-			requireOwnership(req, business)
+		.then((businesses) => {
+			Business.findById(businesses[0]._id)
+				.then((business) => {
+					console.log('business',business)
+					// delete the comment from the transaction
+					business.deleteOne()
 
-			// pass the result of Mongoose's `.update` to the next `.then`
-			return business.updateOne(req.body.business)
+					// return the saved transaction
+					return business.save()
+				})
+				// if that succeeded, return 204 and no JSON
+				.then(() => res.sendStatus(204))
+				// if an error occurs, pass it to the handler
+				.catch(next)
+            
 		})
 		// if that succeeded, return 204 and no JSON
 		.then(() => res.sendStatus(204))

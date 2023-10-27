@@ -6,6 +6,9 @@ const businessSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		yelp_id: {
+			type:String,
+		},
 		image_url: {
 			type: String,
 		},
