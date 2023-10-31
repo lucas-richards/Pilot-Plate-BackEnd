@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const fetch = require('node-fetch')
 
 // require route files
 const businessRoutes = require('./app/routes/business_routes')
