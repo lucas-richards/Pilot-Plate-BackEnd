@@ -33,7 +33,7 @@ router.get('/businesses/:dataId', (req, res, next) => {
 	// Define the query object based on whether ownerIdToFind is provided
 	let query = yelpIdToFind ? { yelp_id: yelpIdToFind } : {};
 	if (req.query.dataId === 'undefined') query={}
-	Business.find(query)
+	Business.find(query).populate('owner')
 		.then((businesses) => {
 			return businesses.map((business) => business.toObject())
 		})
