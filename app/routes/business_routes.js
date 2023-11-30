@@ -87,12 +87,7 @@ router.delete('/businesses/:id', (req, res, next) => {
 				// return the saved transaction
 				return business.save()
 			})
-			// if that succeeded, return 204 and no JSON
-			.then(() => res.sendStatus(204))
-			// if an error occurs, pass it to the handler
-			.catch(next)
-            
-		})
+		
 		// if that succeeded, return 204 and no JSON
 		.then(() => res.sendStatus(204))
 		// if an error occurs, pass it to the handler
