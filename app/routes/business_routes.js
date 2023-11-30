@@ -79,21 +79,18 @@ router.post('/businesses', (req, res, next) => {
 router.delete('/businesses/:id', (req, res, next) => {
 	console.log(req.params.id)
 	Business.find({ _id: req.params.id })
-		.then(handle404)
-		.then((businesses) => {
-			Business.findById(businesses[0]._id)
-				.then((business) => {
-					console.log('business',business)
-					// delete the comment from the transaction
-					business.deleteOne()
+			.then((business) => {
+				console.log('business',business)
+				// delete the comment from the transaction
+				business.deleteOne()
 
-					// return the saved transaction
-					return business.save()
-				})
-				// if that succeeded, return 204 and no JSON
-				.then(() => res.sendStatus(204))
-				// if an error occurs, pass it to the handler
-				.catch(next)
+				// return the saved transaction
+				return business.save()
+			})
+			// if that succeeded, return 204 and no JSON
+			.then(() => res.sendStatus(204))
+			// if an error occurs, pass it to the handler
+			.catch(next)
             
 		})
 		// if that succeeded, return 204 and no JSON
