@@ -78,7 +78,7 @@ router.post('/businesses', (req, res, next) => {
 // PATCH /businesses/5a7db6c74d55bc51bdf39793
 router.delete('/businesses/:id', (req, res, next) => {
 	console.log(req.params.id)
-	Business.find({ yelp_id: req.params.id })
+	Business.find({ _id: req.params.id })
 		.then(handle404)
 		.then((businesses) => {
 			Business.findById(businesses[0]._id)
