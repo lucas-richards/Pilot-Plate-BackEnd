@@ -77,22 +77,44 @@ router.post('/businesses', (req, res, next) => {
 // UPDATE
 // PATCH /businesses/5a7db6c74d55bc51bdf39793
 router.delete('/businesses/:id', (req, res, next) => {
-	console.log(req.params.id)
-	Business.find({ _id: req.params.id })
-			.then((business) => {
-				console.log('business',business)
-				// delete the comment from the transaction
-				business.deleteOne()
+    console.log(req.params.id);
+    Business.findOne({ _id: req.params.id })
+        .then((business) => {
+            if (!business) {
+                return res.status(404).json({ error: 'Business not found' });
+            }
 
-				// return the saved transaction
-				return business.save()
-			})
+            // Delete the business
+            return business.deleteOne()
+                .then(() => {
+                    // Respond with a success status code
+                    res.sendStatus(204);
+                })
+                .catch((error) => {
+                    throw error; // Pass the error to the error handler
+                });
+        })
+        .catch((error) => {
+            next(error); // Pass any errors to the error handler
+        });
+});
+// router.delete('/businesses/:id', (req, res, next) => {
+// 	console.log(req.params.id)
+// 	Business.find({ _id: req.params.id })
+// 			.then((business) => {
+// 				console.log('business',business)
+// 				// delete the comment from the transaction
+// 				business.deleteOne()
+
+// 				// return the saved transaction
+// 				return business.save()
+// 			})
 		
-		// if that succeeded, return 204 and no JSON
-		.then(() => res.sendStatus(204))
-		// if an error occurs, pass it to the handler
-		.catch(next)
-})
+// 		// if that succeeded, return 204 and no JSON
+// 		.then(() => res.sendStatus(204))
+// 		// if an error occurs, pass it to the handler
+// 		.catch(next)
+// })
 
 
 module.exports = router
