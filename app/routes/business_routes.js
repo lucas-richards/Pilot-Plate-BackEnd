@@ -76,6 +76,28 @@ router.post('/businesses', (req, res, next) => {
 
 // UPDATE
 // PATCH /businesses/5a7db6c74d55bc51bdf39793
+router.patch('/businesses/:id', requireToken, removeBlanks, (req, res, next) => {
+	// if the client attempts to change the `owner` property by including a new
+	// owner, prevent that by deleting that key/value pair
+	delete req.body.business.owner
+
+	Business.findById(req.params.id)
+		.then(handle404)
+		.then((business) => {
+			// pass the `req` object and the Mongoose record to `requireOwnership`
+			// it will throw an error if the current user isn't the owner
+			requireOwnership(req, business)
+
+			// pass the result of Mongoose's `.update` to the next `.then`
+			return business.updateOne(req.body.business)
+		})
+		// if that succeeded, return 204 and no JSON
+		.then(() => res.sendStatus(204))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+// Delete
+// delete /businesses/5a7db6c74d55bc51bdf39793
 router.delete('/businesses/:id', (req, res, next) => {
 	console.log(req.params.id)
 	Business.find({ yelp_id: req.params.id })
