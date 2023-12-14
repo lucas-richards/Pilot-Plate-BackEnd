@@ -15,6 +15,10 @@ const businessSchema = new mongoose.Schema(
 		price: {
 			type: Number
 		},
+		rating: {
+			type: Number,
+			required: false,
+		},
 		categories: {
 			type:Array,
 			default:[]
