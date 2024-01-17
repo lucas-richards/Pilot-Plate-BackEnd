@@ -5,6 +5,7 @@ const cors = require('cors')
 const fetch = require('node-fetch')
 
 // require route files
+const transactionRoutes = require('./app/routes/transaction_routes')
 const businessRoutes = require('./app/routes/business_routes')
 const userRoutes = require('./app/routes/user_routes')
 
@@ -94,6 +95,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
+app.use(transactionRoutes)
 app.use(businessRoutes)
 app.use(userRoutes)
 
