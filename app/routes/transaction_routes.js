@@ -30,6 +30,10 @@ const router = express.Router()
 router.get('/transactions', (req, res, next) => {
 	Transaction.find().populate('owner')
 		.then((transactions) => {
+			// order by date
+			transactions.sort(function(a,b){
+				return new Date(b.date) - new Date(a.date);
+			});
 			return transactions.map((transaction) => transaction.toObject())
 		})
 		// respond with status 200 and JSON of the transactions
