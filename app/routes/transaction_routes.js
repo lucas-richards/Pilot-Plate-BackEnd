@@ -26,9 +26,13 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
+const PAGE_SIZE = 5; // Set your desired page size
 // GET /transactions
 router.get('/transactions', (req, res, next) => {
-	Transaction.find().populate('owner').sort({ createdAt: -1 })
+	const { page } = req.query
+	const skip = (page - 1) * PAGE_SIZE
+
+	Transaction.find().populate('owner').sort({ createdAt: -1 }).skip(skip).limit(PAGE_SIZE)
 		.then((transactions) => {
 			
 			return transactions.map((transaction) => transaction.toObject())
