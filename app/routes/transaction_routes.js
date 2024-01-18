@@ -32,7 +32,7 @@ router.get('/transactions', (req, res, next) => {
 		.then((transactions) => {
 			// order by date
 			transactions.sort(function(a,b){
-				return new Date(b.date) - new Date(a.date);
+				return new Date(a.date) - new Date(b.date);
 			});
 			return transactions.map((transaction) => transaction.toObject())
 		})
