@@ -26,7 +26,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-const PAGE_SIZE = 5; // Set your desired page size
+const PAGE_SIZE = 6; // Set your desired page size
 // GET /transactions
 router.get('/transactions', (req, res, next) => {
 	const { page } = req.query
