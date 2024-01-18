@@ -28,12 +28,9 @@ const router = express.Router()
 // INDEX
 // GET /transactions
 router.get('/transactions', (req, res, next) => {
-	Transaction.find().populate('owner')
+	Transaction.find().populate('owner').sort({ createdAt: 1 })
 		.then((transactions) => {
-			// order by date
-			transactions.sort(function(a,b){
-				return new Date(a.date) - new Date(b.date);
-			});
+			
 			return transactions.map((transaction) => transaction.toObject())
 		})
 		// respond with status 200 and JSON of the transactions
