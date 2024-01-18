@@ -28,7 +28,7 @@ const router = express.Router()
 // INDEX
 // GET /transactions
 router.get('/transactions', (req, res, next) => {
-	Transaction.find().populate('owner').sort({ createdAt: 1 })
+	Transaction.find().populate('owner').sort({ createdAt: -1 })
 		.then((transactions) => {
 			
 			return transactions.map((transaction) => transaction.toObject())
