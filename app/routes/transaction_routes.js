@@ -30,7 +30,8 @@ const PAGE_SIZE = 6; // Set your desired page size
 // GET /transactions
 router.get('/transactions', (req, res, next) => {
 	const { page } = req.query
-	const limit = PAGE_SIZE + page
+	const limit = parseInt(PAGE_SIZE) + parseInt(page)
+	console.log(limit)
 
 	Transaction.find().populate('owner').sort({ createdAt: -1 }).limit(limit)
 		.then((transactions) => {
