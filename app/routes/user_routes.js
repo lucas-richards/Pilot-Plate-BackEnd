@@ -32,12 +32,16 @@ router.put('/users/:id/add_friend', requireToken, (req, res, next) => {
 	console.log('this is req.body =',req.body)
 	console.log('this is req.params =',req.params)
 	// find the user by its id
-	User.findById(userId).populate('friends')
+	User.findById(userId)
 		.then((user) => {
-			// add the friend to the friends array
-			user.friends.push(friendId)
-			// save the user
-			return user.save()
+			User.findById(userId)
+			.then((friend) => {
+				// add the friend to the friends array
+				console.log('this is user =',user)
+				user.friends.push(friend.email)
+				// save the user
+				return user.save()
+			})
 		})
 		// respond with the user object
 		.then((user) => res.status(201).json({ user: user.toObject() }))
