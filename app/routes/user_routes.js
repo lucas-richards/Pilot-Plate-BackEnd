@@ -25,6 +25,40 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+// PUT /user/:id/add_friend
+router.put('user/:id/add_friend', requireToken, (req, res, next) => {
+	const friendId = req.body.friendId
+	const userId = req.user.id
+	// find the user by its id
+	User.findById(userId)
+		.then((user) => {
+			// add the friend to the friends array
+			user.friends.push(friendId)
+			// save the user
+			return user.save()
+		})
+		// respond with the user object
+		.then((user) => res.status(201).json({ user: user.toObject() }))
+		.catch(next)
+})
+
+// DELETE /user/:id/remove_friend
+
+router.delete('user/:id/remove_friend', requireToken, (req, res, next) => {
+	const friendId = req.body.friendId
+	const userId = req.user.id
+	// find the user by its id
+	User.findById(userId)
+		.then((user) => {
+			// remove the friend from the friends array
+			user.friends.pull(friendId)
+			// save the user
+			return user.save()
+		})
+		// respond with the user object
+		.then((user) => res.status(201).json({ user: user.toObject() }))
+		.catch(next)
+})
 
 // GET /users
 router.get('/search_users', (req, res, next) => {
