@@ -26,7 +26,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // PUT /users/:id/add_friend
-router.put('users/:id/add_friend', requireToken, (req, res, next) => {
+router.put('/users/:id/add_friend', requireToken, (req, res, next) => {
 	const friendId = req.body.friendId
 	const userId = req.params.id
 	console.log('this is req.body =',req.body)
@@ -46,7 +46,7 @@ router.put('users/:id/add_friend', requireToken, (req, res, next) => {
 
 // DELETE /user/:id/remove_friend
 
-router.delete('users/:id/remove_friend/:friendId', requireToken, (req, res, next) => {
+router.delete('/users/:id/remove_friend/:friendId', requireToken, (req, res, next) => {
 	const friendId = req.params.friendId
 	const userId = req.params.id
 	// find the user by its id
