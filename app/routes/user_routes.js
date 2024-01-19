@@ -28,7 +28,9 @@ const router = express.Router()
 // PUT /user/:id/add_friend
 router.put('user/:id/add_friend', requireToken, (req, res, next) => {
 	const friendId = req.body.friendId
-	const userId = req.user.id
+	const userId = req.params.id
+	console.log('this is req.body =',req.body)
+	console.log('this is req.params =',req.params)
 	// find the user by its id
 	User.findById(userId)
 		.then((user) => {
@@ -44,9 +46,9 @@ router.put('user/:id/add_friend', requireToken, (req, res, next) => {
 
 // DELETE /user/:id/remove_friend
 
-router.delete('user/:id/remove_friend', requireToken, (req, res, next) => {
-	const friendId = req.body.friendId
-	const userId = req.user.id
+router.delete('user/:id/remove_friend/:friendId', requireToken, (req, res, next) => {
+	const friendId = req.params.friendId
+	const userId = req.params.id
 	// find the user by its id
 	User.findById(userId)
 		.then((user) => {
