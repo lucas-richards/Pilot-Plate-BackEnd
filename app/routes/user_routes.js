@@ -25,6 +25,24 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+
+// GET /users
+router.get('/search_users', (req, res, next) => {
+	console.log('this is req.query.partialEmail =',req.query.partialEmail)
+	const partialEmail = req.query.partialEmail;
+	// Define the query object based on whether ownerIdToFind is provided
+	let query = { email: { $regex: `^${partialEmail}`, $options: 'i' } };
+	if (req.query.partialEmail === 'undefined') query={}
+	User.find(query)
+		.then((users) => {
+			return users.map((user) => user.toObject())
+		})
+		// respond with status 200 and JSON of the users
+		.then((users) => res.status(200).json({ users: users }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+
 // SIGN UP
 // POST /sign-up
 router.post('/sign-up', (req, res, next) => {
