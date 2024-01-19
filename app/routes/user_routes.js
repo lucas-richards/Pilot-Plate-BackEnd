@@ -27,41 +27,22 @@ const router = express.Router()
 
 // PUT /users/:id/add_friend
 router.put('/users/:id/add_friend', requireToken, (req, res, next) => {
-	const friendId = req.body.friendId;
-	const userId = req.params.id;
-  
-	console.log('Request Body:', req.body);
-	console.log('Request Params:', req.params);
-  
-	// Find the user by its id
-	User.findById(userId)
-	  .then((user) => {
-		if (!user) {
-		  return Promise.reject({ status: 404, message: 'User not found' });
-		}
-  
-		return User.findById(friendId);
-	  })
-	  .then((friend) => {
-		if (!friend) {
-		  return Promise.reject({ status: 404, message: 'Friend not found' });
-		}
-  
-		// Add the friend to the friends array
-		console.log('User:', user);
-		user.friends.push(friend.email);
-  
-		// Save the user
-		return user.save();
-	  })
-	  .then((savedUser) => {
-		// Respond with the user object
-		res.status(201).json({ user: savedUser.toObject() });
-	  })
-	  .catch((error) => {
-		next(error);
-	  });
-  });
+	const friendEmail = req.body.friendEmail
+	const userId = req.params.id
+	console.log('this is req.body =',req.body)
+	console.log('this is req.params =',req.params)
+	// find the user by its id
+	User.findById(userId).populate('friends')
+		.then((user) => {
+			// add the friend to the friends array
+			user.friends.push(friendEmail)
+			// save the user
+			return user.save()
+		})
+		// respond with the user object
+		.then((user) => res.status(201).json({ user: user.toObject() }))
+		.catch(next)
+})
 
 // DELETE /user/:id/remove_friend
 
