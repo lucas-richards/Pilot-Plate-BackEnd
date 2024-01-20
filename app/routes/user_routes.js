@@ -44,16 +44,16 @@ router.put('/users/:id/add_friend', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
-// DELETE /user/:id/remove_friend
+// DELETE /user/:id/delete_friend
 
-router.delete('/users/:id/remove_friend/:friendId', requireToken, (req, res, next) => {
-	const friendId = req.params.friendId
+router.delete('/users/:id/delete_friend/:friendId', requireToken, (req, res, next) => {
+	const friendEmail = req.params.friendEmail
 	const userId = req.params.id
 	// find the user by its id
 	User.findById(userId)
 		.then((user) => {
 			// remove the friend from the friends array
-			user.friends.pull(friendId)
+			user.friends.pull(friendEmail)
 			// save the user
 			return user.save()
 		})
