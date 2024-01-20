@@ -49,6 +49,8 @@ router.put('/users/:id/add_friend', requireToken, (req, res, next) => {
 router.delete('/users/:id/delete_friend/:friendEmail', requireToken, (req, res, next) => {
 	const friendEmail = req.params.friendEmail
 	const userId = req.params.id
+	console.log('this is req.body =',req.body)
+	console.log('this is req.params =',req.params)
 	// find the user by its id
 	User.findById(userId)
 		.then((user) => {
