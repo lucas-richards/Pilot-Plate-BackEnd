@@ -72,6 +72,7 @@ try {
 	&radius=${req.query.radius}
 	&sort_by=best_match
 	&limit=50`)
+	console.log('#############response',response.json())
 	
 	const data = await response.json();
 	res.json(data);
