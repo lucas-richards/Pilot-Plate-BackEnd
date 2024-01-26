@@ -53,7 +53,7 @@ app.get('/yelp-data/:loc', async (req, res) => {
 
 try {
 	console.log('API_KEY=',process.env.API_KEY)
-	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&longitude=${req.query.longitude}&latitude=${req.query.latitude}&price=${req.query.price}&term=${req.query.term}&radius=${req.query.radius}&sort_by=best_match&limit=50`, {
+	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&latitude=${req.query.latitude}&longitude=${req.query.longitude}&price=${req.query.price}&term=${req.query.term}&radius=${req.query.radius}&sort_by=best_match&limit=50`, {
 		method: 'GET',
 		headers: {
 		'Authorization': process.env.API_KEY,
@@ -63,15 +63,7 @@ try {
 	
 });
 	console.log('#############req.query',req.query)
-	console.log(`https://api.yelp.com/v3/businesses/search?
-	location=${req.query.location}
-	&price=${req.query.price}
-	&longitude=${req.query.longitude}
-	&latitude=${req.query.latitude}
-	&term=${req.query.term}
-	&radius=${req.query.radius}
-	&sort_by=best_match
-	&limit=50`)
+	console.log(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&longitude=${req.query.longitude}&latitude=${req.query.latitude}&term=${req.query.term}&radius=${req.query.radius}&sort_by=best_match&limit=50`)
 	console.log('#############response',response.json())
 	
 	const data = await response.json();
@@ -80,6 +72,9 @@ try {
 	console.log('this is the yelp api erro',error)
 }
 });
+
+// https://api.yelp.com/v3/businesses/search?location=LA&latitude=34.052235&longitude=-118.243683&sort_by=best_match&limit=20"
+// https://api.yelp.com/v3/businesses/search?location=LA&longitude=34.052235&latitude=-118.243683&sort_by=best_match&limit=50"
   
 
 // define port for API to run on
