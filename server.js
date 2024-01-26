@@ -53,7 +53,15 @@ app.get('/yelp-data/:loc', async (req, res) => {
 
 try {
 	console.log('API_KEY=',process.env.API_KEY)
-	const response = await fetch(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&term=${req.query.term}&radius=${req.query.radius}&sort_by=best_match&limit=50`, {
+	const response = await fetch(`https://api.yelp.com/v3/businesses/search?
+	location=${req.query.location}
+	&longitude=${req.query.longitude}
+	&latitude=${req.query.latitude}
+	&price=${req.query.price}
+	&term=${req.query.term}
+	&radius=${req.query.radius}
+	&sort_by=best_match
+	&limit=50`, {
 		method: 'GET',
 		headers: {
 		'Authorization': process.env.API_KEY,
@@ -63,7 +71,15 @@ try {
 	
 });
 	console.log('#############req.query',req.query)
-	console.log(`https://api.yelp.com/v3/businesses/search?location=${req.query.location}&price=${req.query.price}&term=${req.query.term}&radius=${req.query.radius}&sort_by=best_match&limit=50`)
+	console.log(`https://api.yelp.com/v3/businesses/search?
+	location=${req.query.location}
+	&price=${req.query.price}
+	&longitude=${req.query.longitude}
+	&latitude=${req.query.latitude}
+	&term=${req.query.term}
+	&radius=${req.query.radius}
+	&sort_by=best_match
+	&limit=50`)
 	
 	const data = await response.json();
 	res.json(data);
